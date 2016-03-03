@@ -1,0 +1,19 @@
+{
+  "name": "purchase-order",
+  "version": "0.0.1",
+  "description": "Working on formatting a PDF purchace order, to email as attachment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Strutt (Big Wednesday IO)",
+  "license": "ISC",
+  "dependencies": {
+    "form-data": "^0.2.0",
+    "handlebars": "^4.0.5",
+    "html5-to-pdf": "^1.1.3"
+  },
+  "devDependencies": {
+    "watch": "^0.17.1"
+  }
+}
