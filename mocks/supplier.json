@@ -1,0 +1,27 @@
+{
+    "_metadata":{
+        "created":"2015-12-23T16:07:57.489Z",
+        "updated":"2016-03-04T10:44:31.946Z"
+    },
+    "website":"http://beer2.go",
+    "initials":"Be",
+    "facebook":"beer.2.go",
+    "about":"Your one-stop-shop for beer and other alcoholic beverages...",
+    "delivery_days":[
+        1,
+        2,
+        4,
+        5,
+        6
+    ],
+    "has_memberships":true,
+    "twitter":"Beer2Go",
+    "colour":"#F44336",
+    "delivery_charge":0,
+    "purchase_restrictions":"members",
+    "delivery_lead_time":1,
+    "name":"Beer2Go",
+    "banner_image":"http://lorempixel.com/1000/200/food/10/",
+    "email":"beer2go@bigwednesday.io",
+    "id":"ciij0l38d00030ifshkz23rc5"
+}

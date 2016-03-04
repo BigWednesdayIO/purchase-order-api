@@ -1,12 +1,18 @@
+require('dotenv').config();
 var Handlebars = require('handlebars');
 var fs = require('fs');
 var FormData = require('form-data');
 var html5pdf = require("html5-to-pdf");
+var twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 var data = {
 	order: require('./mocks/order-form.json'),
-	membership: require('./mocks/membership.json')
+	membership: require('./mocks/membership.json'),
+	supplier: require('./mocks/supplier.json')
 };
+
+data.supplier.orders_email = process.env.SUPPLIER_EMAIL;
+data.supplier.orders_textsms = process.env.SUPPLIER_MOBILE;
 
 Handlebars.registerHelper('currency', function(amount) {
 	if (typeof amount === 'undefined') {
@@ -28,6 +34,27 @@ Handlebars.registerHelper('date', function(datestring) {
 	return day + '/' + month + '/' + year;
 });
 
+function orderUrl () {
+	var url = 'http://orderable-onboarding.surge.sh';
+	return url + '/orders/' + data.order.id + '/';
+}
+
+function sendSMS (to) {
+	twilioClient.sendMessage({
+		to: to,
+		from: process.env.TWILIO_NUMBER,
+		body: 'New purchase order from ' + data.order.billing_address.company + ' for details see ' + orderUrl()
+	}, function(err, responseData) {
+		if (err) {
+			console.error(err);
+			return;
+		}
+
+		console.log(responseData.from);
+		console.log(responseData.body);
+	});
+}
+
 function sendEmail (html, pdf) {
 	var form = new FormData();
 	form.append('html', html);
@@ -35,10 +62,10 @@ function sendEmail (html, pdf) {
 
 	var path = '/api/mail.send.json';
 	var params = {
-		api_user: 'bigwednesday_testing',
-		api_key: 'sv_penguin666',
-		to: 'michael@mstrutt.co.uk',
-		from: 'michael@bigwednesday.io',
+		api_user: process.env.SENDGRID_API_USER,
+		api_key: process.env.SENDGRID_API_KEY,
+		to: data.supplier.orders_email || data.supplier.email,
+		from: 'orders@bigwednesday.io',
 		subject: 'Purchase Order ' + data.order.id,
 		text: 'New purchase order from ' + data.order.billing_address.company
 	};
@@ -75,5 +102,10 @@ fs.readFile('template.html', 'utf-8', function(error, source) {
 
 		// Send Email
 		sendEmail(html, pdf);
+
+		// Send SMS
+		if (data.supplier.orders_textsms) {
+			sendSMS(data.supplier.orders_textsms);
+		}
 	});
 });
