@@ -20,4 +20,7 @@ if (SUPPLIER_MOBILE) {
 	data.supplier.orders_textsms = process.env.SUPPLIER_MOBILE;
 }
 
-purchaseOrder(data);
+purchaseOrder(data)
+	.then(() => {
+		console.log('ALL DONE')
+	});
