@@ -22,5 +22,5 @@ if (SUPPLIER_MOBILE) {
 
 purchaseOrder(data)
 	.then(() => {
-		console.log('ALL DONE')
+		console.log('ALL DONE');
 	});
